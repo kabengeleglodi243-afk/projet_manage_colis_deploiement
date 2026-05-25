@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <h5 class="card-title fw-semibold mb-0">Détails du colis</h5>
+                  <a href="{% url 'lister_colis' %}" class="btn btn-outline-primary">Retour à la liste</a>
+                </div>
+
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row mb-4">
+                      <div class="col-md-6">
+                        <h6 class="fw-semibold text-primary mb-3">Informations générales</h6>
+                        <table class="table table-borderless">
+                          <tbody>
+                            <tr>
+                              <td class="fw-semibold" width="40%">Code:</td>
+                              <td><span class="badge bg-warning rounded-3 fw-semibold">{{ colis.code }}</span></td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Type:</td>
+                              <td>{{ colis.type }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Poids:</td>
+                              <td>{{ colis.poids }} kg</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Destination:</td>
+                              <td>{{ colis.destination|title }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">État:</td>
+                              <td>
+                                {% if colis.etat == 'traitement' %}
+                                <span class="badge bg-warning rounded-3 fw-semibold">{{ colis.get_etat_display }}</span>
+                                {% elif colis.etat == 'voyage' %}
+                                <span class="badge bg-primary rounded-3 fw-semibold">{{ colis.get_etat_display }}</span>
+                                {% elif colis.etat == 'arrive' %}
+                                <span class="badge bg-success rounded-3 fw-semibold">{{ colis.get_etat_display }}</span>
+                                {% elif colis.etat == 'annule' %}
+                                <span class="badge bg-danger rounded-3 fw-semibold">{{ colis.get_etat_display }}</span>
+                                {% endif %}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Validé:</td>
+                              <td>
+                                {% if colis.est_valider %}
+                                <span class="badge bg-success rounded-3 fw-semibold">Oui</span>
+                                {% else %}
+                                <span class="badge bg-secondary rounded-3 fw-semibold">Non</span>
+                                {% endif %}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div class="col-md-6">
+                        <h6 class="fw-semibold text-primary mb-3">Horaires</h6>
+                        <table class="table table-borderless">
+                          <tbody>
+                            <tr>
+                              <td class="fw-semibold" width="40%">Heure de départ:</td>
+                              <td>{{ colis.heure_depart|date:"d/m/Y H:i"|default:"Non définie" }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Heure d'arrivée:</td>
+                              <td>{{ colis.heure_arrivee|date:"d/m/Y H:i"|default:"Non définie" }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <h6 class="fw-semibold text-primary mb-3 mt-4">Succursale</h6>
+                        <table class="table table-borderless">
+                          <tbody>
+                            <tr>
+                              <td class="fw-semibold" width="40%">Nom:</td>
+                              <td>{{ colis.succursale.nom }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Ville:</td>
+                              <td>{{ colis.succursale.ville }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Adresse:</td>
+                              <td>{{ colis.succursale.adresse }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="row mb-4">
+                      <div class="col-12">
+                        <h6 class="fw-semibold text-primary mb-3">Description</h6>
+                        <p class="text-muted">{{ colis.description }}</p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h6 class="fw-semibold text-primary mb-3">Expéditeur</h6>
+                        {% if colis.expediteur %}
+                        <table class="table table-borderless">
+                          <tbody>
+                            <tr>
+                              <td class="fw-semibold" width="40%">Nom complet:</td>
+                              <td>{{ colis.expediteur.nom }} {{ colis.expediteur.postnom }} {{ colis.expediteur.prenom }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Code:</td>
+                              <td><span class="badge bg-info rounded-3 fw-semibold">{{ colis.expediteur.code }}</span></td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Téléphone:</td>
+                              <td>{{ colis.expediteur.telephone }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Adresse:</td>
+                              <td>{{ colis.expediteur.adresse }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Date de naissance:</td>
+                              <td>{{ colis.expediteur.date_naissance|date:"d/m/Y"|default:"Non renseignée" }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Lieu de naissance:</td>
+                              <td>{{ colis.expediteur.lieu_naissance|default:"Non renseigné" }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        {% else %}
+                        <p class="text-muted">Aucun expéditeur enregistré</p>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-md-6">
+                        <h6 class="fw-semibold text-primary mb-3">Récepteur</h6>
+                        {% if colis.recepteur %}
+                        <table class="table table-borderless">
+                          <tbody>
+                            <tr>
+                              <td class="fw-semibold" width="40%">Nom complet:</td>
+                              <td>{{ colis.recepteur.nom }} {{ colis.recepteur.postnom }} {{ colis.recepteur.prenom }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Code:</td>
+                              <td><span class="badge bg-info rounded-3 fw-semibold">{{ colis.recepteur.code }}</span></td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Téléphone:</td>
+                              <td>{{ colis.recepteur.telephone }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Adresse:</td>
+                              <td>{{ colis.recepteur.adresse }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Date de naissance:</td>
+                              <td>{{ colis.recepteur.date_naissance|date:"d/m/Y"|default:"Non renseignée" }}</td>
+                            </tr>
+                            <tr>
+                              <td class="fw-semibold">Lieu de naissance:</td>
+                              <td>{{ colis.recepteur.lieu_naissance|default:"Non renseigné" }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        {% else %}
+                        <p class="text-muted">Aucun récepteur enregistré</p>
+                        {% endif %}
+                      </div>
+                    </div>
+
+                    <div class="row mt-4">
+                      <div class="col-12">
+                        <a href="{% url 'lister_colis' %}" class="btn btn-outline-secondary me-2">Retour</a>
+                        <a href="{% url 'modifier_colis' colis.id %}" class="btn btn-primary me-2">Modifier</a>
+                        <a href="{% url 'supprimer_colis' colis.id %}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce colis ?')">Supprimer</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock content %}

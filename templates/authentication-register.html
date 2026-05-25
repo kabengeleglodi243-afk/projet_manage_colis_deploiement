@@ -1,0 +1,124 @@
+{# Chargement des fichiers statiques #}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modernize Free</title>
+  <link rel="shortcut icon" type="image/png" href="{% static '/images/logos/favicon.png' %}" />
+  <link rel="stylesheet" href="{% static '/css/styles.min.css' %}" />
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <div
+      class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+      <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="row justify-content-center w-100">
+          <div class="col-md-8 col-lg-6 col-xxl-3">
+            <div class="card mb-0">
+              <div class="card-body">
+                <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                  <h1>ManageColis</h1>
+                </a>
+                <p class="text-center">Votre apFplication de gestion de colis</p>
+                {# Formulaire d'inscription (méthode POST) #}
+                <form method="POST">
+                  {# Token CSRF pour la sécurité #}
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="exampleInputtext1" class="form-label">Nom</label>
+                    <input type="text" class="form-control" id="exampleInputtext1" aria-describedby="textHelp" name="nom">
+                  </div>
+                  <div class="row">
+                    <div class="mb-3 col-6">
+                      <label for="exampleInputtext1" class="form-label">Postnom</label>
+                      <input type="text" class="form-control" id="exampleInputtext1" aria-describedby="textHelp" name="postnom">
+                    </div>
+                    <div class="mb-3 col-6">
+                      <label for="exampleInputtext1" class="form-label">Prénom</label>
+                      <input type="text" class="form-control" id="exampleInputtext1" aria-describedby="textHelp" name="prenom">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="mb-3 col-6">
+                      <label for="exampleInputtext1" class="form-label">Nom d'utilisateur</label>
+                      <input type="text" class="form-control" id="exampleInputtext1" aria-describedby="textHelp" name="nom_utilisateur">
+                    </div>
+                    <div class="mb-3 col-6">
+                      <label for="exampleInputEmail1" class="form-label">Adresse mail</label>
+                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="mail">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputtext1" class="form-label">Sexe</label>
+                    <select class="form-control" id=""  name="sexe">
+                      <option value="M">Masculin</option>
+                      <option value="F">Féminin</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Adresse physique</label>
+                    <textarea class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="adresse_physique">
+                    </textarea>
+                  </div>
+                  <div class="row">
+                    <div class="mb-3 col-6">
+                      <label for="exampleInputtext1" class="form-label">Lieu de naissance</label>
+                      <input type="text" class="form-control" id="exampleInputtext1" aria-describedby="textHelp" name="lieu_naissance">
+                    </div>
+                    <div class="mb-3 col-6">
+                      <label for="exampleInputtext1" class="form-label">Date de naissance</label>
+                      <input type="date" class="form-control" id="exampleInputtext1" aria-describedby="textHelp" name="date_naissance">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="mb-4 col-6">
+                      <label for="exampleInputPassword1" class="form-label">Mot de passe</label>
+                      <input type="password" class="form-control" id="exampleInputPassword1" name="mot_de_passe_1" required>
+                    </div>
+                    <div class="mb-4 col-6">
+                      <label for="exampleInputPassword1" class="form-label">Confirmer mot de passe</label>
+                      <input type="password" class="form-control" id="exampleInputPassword1" name="mot_de_passe_2" required>
+                    </div>
+                  </div>
+                  {# Affichage des messages (erreurs, succès, etc.) #}
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="mb-4">
+                        {# Affichage avec la classe CSS appropriée selon le type de message #}
+                        {% if message.tags == 'error' %}
+                          <p class="alert alert-danger">{{ message }}</p>
+                        {% elif message.tags == 'success' %}
+                          <p class="alert alert-success">{{ message }}</p>
+                        {% elif message.tags == 'warning' %}
+                          <p class="alert alert-warning">{{ message }}</p>
+                        {% else %}
+                          <p class="alert alert-info">{{ message }}</p>
+                        {% endif %}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" value="Créer compte">
+                  <div class="d-flex align-items-center justify-content-center">
+                    <p class="fs-4 mb-0 fw-bold">Avez-vous déjà un compte ?</p>
+                    {# Lien vers la page de connexion #}
+                    <a class="text-primary fw-bold ms-2" href="{% url 'connexion' %}">Se connecter</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{% static '/libs/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static '/libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

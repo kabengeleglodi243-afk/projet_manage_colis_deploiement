@@ -1,0 +1,129 @@
+{# Héritage du template de base #}
+{% extends 'base.html' %}
+
+{# Début du bloc de contenu principal #}
+{% block content %}
+  
+
+  
+      <div class="container-fluid">
+        <!--  Row 1 -->
+        
+        <div class="row">
+    
+          <div class="col-lg-12 d-flex align-items-stretch">
+            <div class="card w-100">
+              <div class="card-body p-4">
+                <h5 class="card-title fw-semibold mb-4">Liste des colis</h5>
+                <div class="table-responsive">
+                  <table class="table text-nowrap mb-0 align-middle">
+                    <thead class="text-dark fs-4">
+                      <tr>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Code</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Expéditeur</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Recepteur</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Succursale</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Heure d'arrivée</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Poids</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Etat</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Action</h6>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {# Boucle sur tous les colis passés depuis la vue #}
+                      {% for c in colis %}
+                      <tr>
+                        <td class="border-bottom-0">
+                          {# Affichage du code du colis #}
+                          <h6 class="fw-semibold mb-0">{{ c.code }}</h6>
+                        </td>
+                        <td class="border-bottom-0">
+                          {# Affichage du nom complet du récepteur #}
+                          <h6 class="fw-semibold mb-1">
+                          {% if c.expediteur.user == request.user %}
+                            Moi
+                          {% else %}
+                            {{ c.expediteur.nom }} {{ c.expediteur.prenom }}
+                          {% endif %}
+                          </h6>
+                        </td>
+                        <td class="border-bottom-0">
+                          {# Affichage du nom complet du récepteur #}
+                          <h6 class="fw-semibold mb-1">
+                          {% if c.recepteur.user == request.user %}
+                            Moi
+                          {% else %}
+                            {{ c.recepteur.nom }} {{ c.recepteur.prenom }}
+                          {% endif %}
+                          </h6>
+                        </td>
+                        <td class="border-bottom-0">
+                          {# Affichage du nom de la succursale #}
+                          <p class="mb-0 fw-normal">{{ c.succursale.nom }}</p>
+                        </td>
+                        <td class="border-bottom-0">
+                          {# Affichage de l'heure d'arrivée formatée ou "Non définie" si null #}
+                          <p class="mb-0 fw-normal">{{ c.heure_arrivee|date:"d/m/Y H:i"|default:"Non définie" }}</p>
+                        </td>
+                        <td class="border-bottom-0">
+                          {# Affichage du poids du colis #}
+                          <h6 class="fw-semibold mb-0">{{ c.poids }} kg</h6>
+                        </td>
+                        <td class="border-bottom-0">
+                          <div class="d-flex align-items-center gap-2">
+                            {# Affichage de l'état du colis avec badge coloré selon l'état #}
+                            {% if c.etat == 'traitement' %}
+                            {# Badge jaune pour "En traitement" #}
+                            <span class="badge bg-warning rounded-3 fw-semibold">{{ c.get_etat_display }}</span>
+                            {% elif c.etat == 'voyage' %}
+                            {# Badge bleu pour "En voyage" #}
+                            <span class="badge bg-primary rounded-3 fw-semibold">{{ c.get_etat_display }}</span>
+                            {% elif c.etat == 'arrive' %}
+                            {# Badge vert pour "Arrivée" #}
+                            <span class="badge bg-success rounded-3 fw-semibold">{{ c.get_etat_display }}</span>
+                            {% elif c.etat == 'annule' %}
+                            {# Badge rouge pour "Annulé" #}
+                            <span class="badge bg-danger rounded-3 fw-semibold">{{ c.get_etat_display }}</span>
+                            {% endif %}
+                          </div>
+                        </td>
+                        <td class="border-bottom-0">
+                          {# Bouton pour voir les détails du colis #}
+                          <a href="{% url 'detail_colis' c.id %}" class="btn btn-sm btn-primary me-1">Détails</a>
+                        </td>
+                      </tr>
+                      {# Si aucun colis n'existe, afficher un message #}
+                      {% empty %}
+                      <tr>
+                        <td colspan="7" class="text-center border-bottom-0">
+                          <p class="mb-0 fw-normal">Aucun colis enregistré</p>
+                        </td>
+                      </tr>
+                      {# Fin de la boucle #}
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+{% endblock content %}

@@ -1,0 +1,77 @@
+{# Héritage du template de base #}
+{% extends 'base.html' %}
+
+{# Début du bloc de contenu principal #}
+{% block content %}
+
+      <div class="container-fluid">
+        <div class="container-fluid">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title fw-semibold mb-4">Enregistrer un colis</h5>
+              <div class="card">
+                <div class="card-body">
+                  {# Formulaire d'enregistrement de colis (méthode POST) #}
+                  <form method="POST">
+                    {# Token CSRF pour la sécurité du formulaire #}
+                    {% csrf_token %}
+                    <div class="mb-3">
+                      <label for="exampleInputDescr" class="form-label">Description</label>
+                      <textarea type="text" class="form-control" id="exampleInputDescr" name="description">
+                      </textarea>
+                    </div>
+                    <div class="row">
+                      <div class="mb-3 col-6">
+                        <label for="exampleInputType" class="form-label">Type</label>
+                        <select type="text" class="form-control" id="exampleInputType" required name="type">
+                          <option value="">Selectionner le type</option>
+                          <option value="document">Document</option>
+                          <option value="colis_standard">Colis standard</option>
+                          <option value="marchandise_commerciale">Marchandise commerciale</option>
+                          <option value="produit_alimentaire">Produit alimentaire</option>
+                          <option value="medicament">Médicament</option>
+                          <option value="objet_de_valeur">Objet de valeur</option>
+                          <option value="materiel_electronique">Matériel électronique</option>
+                          <option value="echantillon">Echantillon</option>
+                        </select>
+                      </div>
+                      <div class="mb-3 col-6">
+                        <label for="exampleInputPoids" class="form-label">Poids (Kg)</label>
+                        <input type="text" class="form-control" id="exampleInputPoids" placeholder="En Kg" required name="poids">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="mb-3 col-6">
+                        <label for="exampleInputType" class="form-label">Succursale</label>
+                        <select type="text" class="form-control" id="exampleInputType" required name="succursale">
+                          <option value="">Selectionner la succursale de destination</option>
+                          
+                          {# Boucle sur toutes les succursales disponibles #}
+                          {% for element in succursales %}
+                          {# Affichage du nom et de la ville de chaque succursale #}
+                          <option value="{{ element.id }}">{{ element.nom }} - {{ element.ville }}</option>
+                            
+                          {% endfor %}
+                            
+                        </select>
+                      </div>
+                      <div class="mb-3 col-6">
+                        <label for="exampleInputRecepteur" class="form-label">Recepteur</label>
+                        <input type="text" class="form-control" id="exampleInputRecepteur" placeholder="Veuillez saisir le code du recepteur" required name="code_recepteur">
+                      </div>
+                    </div>
+                   
+                    
+                    
+                    
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                  </form>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock content %}

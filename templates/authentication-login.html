@@ -1,0 +1,81 @@
+{# Chargement des fichiers statiques #}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modernize Free</title>
+  {# Favicon et feuille de style #}
+  <link rel="shortcut icon" type="image/png" href="{% static '/images/logos/favicon.png' %}" />
+  <link rel="stylesheet" href="{% static '/css/styles.min.css' %}" />
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <div
+      class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+      <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="row justify-content-center w-100">
+          <div class="col-md-4 col-lg-4 col-xxl-3">
+            <div class="card mb-0">
+              <div class="card-body">
+                <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                  <h1>ManageColis</h1>
+                </a>
+                <p class="text-center">Votre application de gestion de colis</p>
+                {# Formulaire de connexion (méthode POST) #}
+                <form method="POST">
+                  {# Token CSRF pour la sécurité #}
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Nom d'utilisateur</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="nom_utilisateur">
+                  </div>
+                  <div class="mb-4">
+                    <label for="exampleInputPassword1" class="form-label">Mot de passe</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" name="mot_de_passe">
+                  </div>
+
+                  {# Affichage des messages (erreurs, succès, etc.) #}
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="mb-4">
+                        {# Affichage avec la classe CSS appropriée selon le type de message #}
+                        {% if message.tags == 'error' %}
+                          <p class="alert alert-danger">{{ message }}</p>
+                        {% elif message.tags == 'success' %}
+                          <p class="alert alert-success">{{ message }}</p>
+                        {% elif message.tags == 'warning' %}
+                          <p class="alert alert-warning">{{ message }}</p>
+                        {% else %}
+                          <p class="alert alert-info">{{ message }}</p>
+                        {% endif %}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                    
+                  
+                  <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" value="Se connecter">
+                  <div class="d-flex align-items-center justify-content-center">
+                    <p class="fs-4 mb-0 fw-bold">Pas de compte ?</p>
+                    {# Lien vers la page d'inscription #}
+                    <a class="text-primary fw-bold ms-2" href="{% url 'register' %}">Créer un compte</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {# Chargement des scripts JavaScript #}
+  <script src="{% static '/libs/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static '/libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

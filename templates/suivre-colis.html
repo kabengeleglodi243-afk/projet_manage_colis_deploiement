@@ -1,0 +1,42 @@
+{# Héritage du template de base #}
+{% extends 'base.html' %}
+
+{# Début du bloc de contenu principal #}
+{% block content %}
+
+      <div class="container-fluid">
+        <div class="container-fluid">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title fw-semibold mb-4">Suivre un colis</h5>
+              <div class="card">
+                <div class="card-body">
+                  {# Formulaire de recherche de colis (méthode POST) #}
+                  <form method="POST">
+                    {# Token CSRF pour la sécurité #}
+                    {% csrf_token %}
+                    <div class="mb-3">
+                      <label for="exampleInputCode" class="form-label">Saisissez le code de votre colis</label>
+                      {# Champ de saisie du code du colis #}
+                      <input type="text" class="form-control" id="exampleInputCode" name="code_colis" aria-describedby="emailHelp">
+                      <div id="emailHelp" class="form-text">Veuillez saisir le code que votre expéditeur vous a communiqué.</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Suivre le colis</button>
+                  </form>
+                </div>
+              </div>
+              
+              {# Affichage du message d'erreur si le colis n'est pas trouvé #}
+              {% if message %}
+              <div class="alert alert-danger mt-3">
+                {{ message }}
+              </div>
+              {% endif %}
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock content %}
