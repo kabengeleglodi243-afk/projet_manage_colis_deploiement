@@ -31,4 +31,4 @@ services:
 volumes: 
       postgres_data_gl:
 networks: 
-django_network_gl:
+  django_network_gl:
